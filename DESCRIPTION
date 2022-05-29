@@ -1,0 +1,27 @@
+Package: clonalityParsers
+Type: Package
+Title: What the Package Does (Title Case)
+Version: 0.1.0
+Author: Pawel Kus
+Maintainer: Pawel Kus <pawel.s.kus@protonmail.com>
+Description: More about what it does (maybe more than one line)
+    Use four spaces when indenting paragraphs within the Description.
+License: What license is it under?
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    dplyr,
+    forcats,
+    GenomeInfoDb,
+    ggplot2,
+    plyranges,
+    purrr,
+    readr,
+    stringr,
+    tibble,
+    tidyr,
+    vcfR
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+RoxygenNote: 7.2.0

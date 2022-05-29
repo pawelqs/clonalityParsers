@@ -1,0 +1,100 @@
+##fileformat=VCFv4.2
+##FILTER=<ID=base_qual,Description="alt median base quality">
+##FILTER=<ID=clustered_events,Description="Clustered events observed in the tumor">
+##FILTER=<ID=contamination,Description="contamination">
+##FILTER=<ID=duplicate,Description="evidence for alt allele is overrepresented by apparent duplicates">
+##FILTER=<ID=fragment,Description="abs(ref - alt) median fragment length">
+##FILTER=<ID=germline,Description="Evidence indicates this site is germline, not somatic">
+##FILTER=<ID=haplotype,Description="Variant near filtered variant on same haplotype.">
+##FILTER=<ID=low_allele_frac,Description="Allele fraction is below specified threshold">
+##FILTER=<ID=map_qual,Description="ref - alt median mapping quality">
+##FILTER=<ID=multiallelic,Description="Site filtered because too many alt alleles pass tumor LOD">
+##FILTER=<ID=n_ratio,Description="Ratio of N to alt exceeds specified ratio">
+##FILTER=<ID=normal_artifact,Description="artifact_in_normal">
+##FILTER=<ID=numt_chimera,Description="NuMT variant with too many ALT reads originally from autosome">
+##FILTER=<ID=numt_novel,Description="Alt depth is below expected coverage of NuMT in autosome">
+##FILTER=<ID=orientation,Description="orientation bias detected by the orientation bias mixture model">
+##FILTER=<ID=panel_of_normals,Description="Blacklisted site in panel of normals">
+##FILTER=<ID=position,Description="median distance of alt variants from end of reads">
+##FILTER=<ID=slippage,Description="Site filtered due to contraction of short tandem repeat region">
+##FILTER=<ID=strand_bias,Description="Evidence for alt allele comes from one read direction only">
+##FILTER=<ID=strict_strand,Description="Evidence for alt allele is not represented in both directions">
+##FILTER=<ID=weak_evidence,Description="Mutation does not meet likelihood threshold">
+##FORMAT=<ID=AD,Number=R,Type=Integer,Description="Allelic depths for the ref and alt alleles in the order listed">
+##FORMAT=<ID=AF,Number=A,Type=Float,Description="Allele fractions of alternate alleles in the tumor">
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth (reads with MQ=255 or with bad mates are filtered)">
+##FORMAT=<ID=F1R2,Number=R,Type=Integer,Description="Count of reads in F1R2 pair orientation supporting each allele">
+##FORMAT=<ID=F2R1,Number=R,Type=Integer,Description="Count of reads in F2R1 pair orientation supporting each allele">
+##FORMAT=<ID=GQ,Number=1,Type=Integer,Description="Genotype Quality">
+##FORMAT=<ID=GT,Number=1,Type=String,Description="Genotype">
+##FORMAT=<ID=PGT,Number=1,Type=String,Description="Physical phasing haplotype information, describing how the alternate alleles are phased in relation to one another">
+##FORMAT=<ID=PID,Number=1,Type=String,Description="Physical phasing ID information, where each unique ID within a given sample (but not across samples) connects records within a phasing group">
+##FORMAT=<ID=PL,Number=G,Type=Integer,Description="Normalized, Phred-scaled likelihoods for genotypes as defined in the VCF specification">
+##FORMAT=<ID=PS,Number=1,Type=Integer,Description="Phasing set (typically the position of the first variant in the set)">
+##FORMAT=<ID=SB,Number=4,Type=Integer,Description="Per-sample component statistics which comprise the Fisher's Exact Test to detect strand bias.">
+##GATKCommandLine=<ID=FilterMutectCalls,CommandLine="FilterMutectCalls  --output G31_Mutect2.vcf --filtering-stats G31_Mutect2.filterstats --contamination-table G31.contamination.table --tumor-segmentation G31.segments.table --orientation-bias-artifact-priors G31_Mutect2_read-orientation-model.tar.gz --variant G31_Mutect2nf.vcf --reference /home/rjaksik/library/GENOMES/hg38/Homo_sapiens_assembly38.fasta  --threshold-strategy OPTIMAL_F_SCORE --f-score-beta 1.0 --false-discovery-rate 0.05 --initial-threshold 0.1 --mitochondria-mode false --max-events-in-region 2 --max-alt-allele-count 1 --unique-alt-read-count 0 --min-median-mapping-quality 30 --min-median-base-quality 20 --max-median-fragment-length-difference 10000 --min-median-read-position 1 --max-n-ratio Infinity --min-reads-per-strand 0 --autosomal-coverage 0.0 --max-numt-fraction 0.85 --min-allele-fraction 0.0 --contamination-estimate 0.0 --log-snv-prior -13.815510557964275 --log-indel-prior -16.11809565095832 --log-artifact-prior -2.302585092994046 --normal-p-value-threshold 0.001 --min-slippage-length 8 --pcr-slippage-rate 0.1 --distance-on-haplotype 100 --long-indel-length 5 --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --create-output-variant-index true --create-output-variant-md5 false --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false",Version="4.1.4.0",Date="October 1, 2020 12:40:08 PM CEST">
+##GATKCommandLine=<ID=Mutect2,CommandLine="Mutect2  --f1r2-tar-gz G31_Mutect2_f1r2_0017.tar.gz --normal-sample G31_C --germline-resource /home/rjaksik/library/GATK/af-only-gnomad.hg38.vcf.gz --output G31_Mutect2nf_0017.vcf --intervals G31_INTERVALS/0017-scattered.interval_list --input G31_P1.dedup.recal.bam --input G31_L1.dedup.recal.bam --input G31_C.dedup.recal.bam --reference /home/rjaksik/library/GENOMES/hg38/Homo_sapiens_assembly38.fasta  --f1r2-median-mq 50 --f1r2-min-bq 20 --f1r2-max-depth 200 --genotype-pon-sites false --genotype-germline-sites false --af-of-alleles-not-in-resource -1.0 --mitochondria-mode false --tumor-lod-to-emit 3.0 --initial-tumor-lod 2.0 --pcr-snv-qual 40 --pcr-indel-qual 40 --max-population-af 0.01 --downsampling-stride 1 --callable-depth 10 --max-suspicious-reads-per-alignment-start 0 --normal-lod 2.2 --ignore-itr-artifacts false --gvcf-lod-band -2.5 --gvcf-lod-band -2.0 --gvcf-lod-band -1.5 --gvcf-lod-band -1.0 --gvcf-lod-band -0.5 --gvcf-lod-band 0.0 --gvcf-lod-band 0.5 --gvcf-lod-band 1.0 --minimum-allele-fraction 0.0 --independent-mates false --disable-adaptive-pruning false --dont-trim-active-regions false --max-extension 25 --padding-around-indels 150 --padding-around-snps 20 --kmer-size 10 --kmer-size 25 --dont-increase-kmer-sizes-for-cycles false --allow-non-unique-kmers-in-ref false --num-pruning-samples 1 --min-dangling-branch-length 4 --recover-all-dangling-branches false --max-num-haplotypes-in-population 128 --min-pruning 2 --adaptive-pruning-initial-error-rate 0.001 --pruning-lod-threshold 2.302585092994046 --max-unpruned-variants 100 --debug-assembly false --debug-graph-transformations false --capture-assembly-failure-bam false --error-correct-reads false --kmer-length-for-read-error-correction 25 --min-observations-for-kmer-to-be-solid 20 --likelihood-calculation-engine PairHMM --base-quality-score-threshold 18 --pair-hmm-gap-continuation-penalty 10 --pair-hmm-implementation FASTEST_AVAILABLE --pcr-indel-model CONSERVATIVE --phred-scaled-global-read-mismapping-rate 45 --native-pair-hmm-threads 4 --native-pair-hmm-use-double-precision false --bam-writer-type CALLED_HAPLOTYPES --dont-use-soft-clipped-bases false --min-base-quality-score 10 --smith-waterman JAVA --emit-ref-confidence NONE --max-mnp-distance 1 --force-call-filtered-alleles false --min-assembly-region-size 50 --max-assembly-region-size 300 --assembly-region-padding 100 --max-reads-per-alignment-start 50 --active-probability-threshold 0.002 --max-prob-propagation-distance 50 --force-active false --interval-set-rule UNION --interval-padding 0 --interval-exclusion-padding 0 --interval-merging-rule ALL --read-validation-stringency SILENT --seconds-between-progress-updates 10.0 --disable-sequence-dictionary-validation false --create-output-bam-index true --create-output-bam-md5 false --create-output-variant-index true --create-output-variant-md5 false --lenient false --add-output-sam-program-record true --add-output-vcf-command-line true --cloud-prefetch-buffer 40 --cloud-index-prefetch-buffer -1 --disable-bam-index-caching false --sites-only-vcf-output false --help false --version false --showHidden false --verbosity INFO --QUIET false --use-jdk-deflater false --use-jdk-inflater false --gcs-max-retries 20 --gcs-project-for-requester-pays  --disable-tool-default-read-filters false --max-read-length 2147483647 --min-read-length 30 --minimum-mapping-quality 20 --disable-tool-default-annotations false --enable-all-annotations false",Version="4.1.4.0",Date="September 30, 2020 10:52:28 AM CEST">
+##INFO=<ID=CONTQ,Number=1,Type=Float,Description="Phred-scaled qualities that alt allele are not due to contamination">
+##INFO=<ID=DP,Number=1,Type=Integer,Description="Approximate read depth; some reads may have been filtered">
+##INFO=<ID=ECNT,Number=1,Type=Integer,Description="Number of events in this haplotype">
+##INFO=<ID=GERMQ,Number=1,Type=Integer,Description="Phred-scaled quality that alt alleles are not germline variants">
+##INFO=<ID=MBQ,Number=R,Type=Integer,Description="median base quality">
+##INFO=<ID=MFRL,Number=R,Type=Integer,Description="median fragment length">
+##INFO=<ID=MMQ,Number=R,Type=Integer,Description="median mapping quality">
+##INFO=<ID=MPOS,Number=A,Type=Integer,Description="median distance from end of read">
+##INFO=<ID=NALOD,Number=A,Type=Float,Description="Negative log 10 odds of artifact in normal with same allele fraction as tumor">
+##INFO=<ID=NCount,Number=1,Type=Integer,Description="Count of N bases in the pileup">
+##INFO=<ID=NLOD,Number=A,Type=Float,Description="Normal log 10 likelihood ratio of diploid het or hom alt genotypes">
+##INFO=<ID=OCM,Number=1,Type=Integer,Description="Number of alt reads whose original alignment doesn't match the current contig.">
+##INFO=<ID=PON,Number=0,Type=Flag,Description="site found in panel of normals">
+##INFO=<ID=POPAF,Number=A,Type=Float,Description="negative log 10 population allele frequencies of alt alleles">
+##INFO=<ID=ROQ,Number=1,Type=Float,Description="Phred-scaled qualities that alt allele are not due to read orientation artifact">
+##INFO=<ID=RPA,Number=.,Type=Integer,Description="Number of times tandem repeat unit is repeated, for each allele (including reference)">
+##INFO=<ID=RU,Number=1,Type=String,Description="Tandem repeat unit (bases)">
+##INFO=<ID=SEQQ,Number=1,Type=Integer,Description="Phred-scaled quality that alt alleles are not sequencing errors">
+##INFO=<ID=STR,Number=0,Type=Flag,Description="Variant is a short tandem repeat">
+##INFO=<ID=STRANDQ,Number=1,Type=Integer,Description="Phred-scaled quality of strand bias artifact">
+##INFO=<ID=STRQ,Number=1,Type=Integer,Description="Phred-scaled quality that alt alleles in STRs are not polymerase slippage errors">
+##INFO=<ID=TLOD,Number=A,Type=Float,Description="Log 10 likelihood ratio score of variant existing versus not existing">
+##INFO=<ID=UNIQ_ALT_READ_COUNT,Number=1,Type=Integer,Description="Number of ALT reads with unique start and mate end positions at a variant site">
+##MutectVersion=2.2
+##contig=<ID=chr1,length=248956422>
+##contig=<ID=chr2,length=242193529>
+##contig=<ID=chr3,length=198295559>
+##contig=<ID=chr4,length=190214555>
+##contig=<ID=chr5,length=181538259>
+##contig=<ID=chr6,length=170805979>
+##contig=<ID=chr7,length=159345973>
+##contig=<ID=chr8,length=145138636>
+##contig=<ID=chr9,length=138394717>
+##contig=<ID=chr10,length=133797422>
+##contig=<ID=chr11,length=135086622>
+##contig=<ID=chr12,length=133275309>
+##contig=<ID=chr13,length=114364328>
+##contig=<ID=chr14,length=107043718>
+##contig=<ID=chr15,length=101991189>
+##contig=<ID=chr16,length=90338345>
+##contig=<ID=chr17,length=83257441>
+##contig=<ID=chr18,length=80373285>
+##contig=<ID=chr19,length=58617616>
+##contig=<ID=chr20,length=64444167>
+##contig=<ID=chr21,length=46709983>
+##contig=<ID=chr22,length=50818468>
+##contig=<ID=chrX,length=156040895>
+##contig=<ID=chrY,length=57227415>
+##contig=<ID=chrM,length=16569>
+##filtering_status=These calls have been filtered by FilterMutectCalls to label false positives with a list of failed filters and true positives with PASS.
+##normal_sample=S1_C
+##source=FilterMutectCalls
+##source=Mutect2
+##tumor_sample=S1_L1
+##VEP="v100" time="2020-10-01 12:50:23" cache="/home/rjaksik/library/VEP_db/homo_sapiens_refseq/100_GRCh38" ensembl-funcgen=100.f0c3948 ensembl-variation=100.1074e16 ensembl=100.7e964b7 ensembl-io=100.f87ae4f 1000genomes="phase3" COSMIC="90" ClinVar="201912" ESP="V2-SSA137" HGMD-PUBLIC="20194" assembly="GRCh38.p13" dbSNP="153" gencode="GENCODE 34" genebuild="2014-07" gnomAD="r2.1" polyphen="2.2.2" refseq="2019-12-11 22:24:10 - GCF_000001405.39_GRCh38.p13_genomic.gff" regbuild="1.0" sift="sift5.2.2"
+##INFO=<ID=CSQ,Number=.,Type=String,Description="Consequence annotations from Ensembl VEP. Format: Allele|Consequence|IMPACT|SYMBOL|Gene|Feature_type|Feature|BIOTYPE|EXON|INTRON|HGVSc|HGVSp|cDNA_position|CDS_position|Protein_position|Amino_acids|Codons|Existing_variation|DISTANCE|STRAND|FLAGS|VARIANT_CLASS|SYMBOL_SOURCE|HGNC_ID|CANONICAL|TSL|APPRIS|ENSP|SWISSPROT|TREMBL|UNIPARC|REFSEQ_MATCH|REFSEQ_OFFSET|GENE_PHENO|SIFT|PolyPhen|DOMAINS|AF|AFR_AF|AMR_AF|EAS_AF|EUR_AF|SAS_AF|gnomAD_AF|gnomAD_AFR_AF|gnomAD_AMR_AF|gnomAD_ASJ_AF|gnomAD_EAS_AF|gnomAD_FIN_AF|gnomAD_NFE_AF|gnomAD_OTH_AF|gnomAD_SAS_AF|MAX_AF|MAX_AF_POPS|CLIN_SIG|SOMATIC|PHENO|PUBMED|MOTIF_NAME|MOTIF_POS|HIGH_INF_POS|MOTIF_SCORE_CHANGE">
+#CHROM	POS	ID	REF	ALT	QUAL	FILTER	INFO	FORMAT	S1_C	S1_L1	S1_P1
+chr1	964914	.	C	T	.	PASS	CONTQ=93;DP=465;ECNT=1;GERMQ=93;MBQ=20,29;MFRL=208,201;MMQ=60,60;MPOS=24;NALOD=0.746;NLOD=31.52;POPAF=6.00;ROQ=40;SEQQ=9;STRANDQ=15;TLOD=4.33;CSQ=T|intron_variant|MODIFIER|KLHL17|339451|Transcript|NM_198317.3|protein_coding||11/11||||||||rs1195289696||1||SNV|EntrezGene||YES|||NP_938073.1||||||||||||||||0|0|0|0|0|0|0|0|0|0|gnomAD_AFR&gnomAD_AMR&gnomAD_ASJ&gnomAD_EAS&gnomAD_FIN&gnomAD_NFE&gnomAD_OTH&gnomAD_SAS||||||||	GT:AD:AF:DP:F1R2:F2R1:SB	0/0:154,1:0.017:155:79,1:75,0:111,43,1,0	0/1:170,2:0.023:172:84,2:84,0:121,49,2,0	0/1:123,2:0.021:125:50,0:73,2:90,33,1,1
+chr1	1090850	.	C	T	.	PASS	CONTQ=38;DP=225;ECNT=2;GERMQ=93;MBQ=29,20;MFRL=210,148;MMQ=60,60;MPOS=2;NALOD=1.85;NLOD=20.42;POPAF=6.00;ROQ=29;SEQQ=10;STRANDQ=21;TLOD=5.14;CSQ=T|intron_variant|MODIFIER|C1orf159|54991|Transcript|NM_017891.5|protein_coding||3/9||||||||rs750562634||-1||SNV|EntrezGene||YES|||NP_060361.4||||||||||||||||1.35e-05|0|0|0|0|0|0|0|8.875e-05|8.875e-05|gnomAD_SAS||||||||	GT:AD:AF:DP:F1R2:F2R1:SB	0/0:85,0:0.014:85:30,0:54,0:64,21,0,0	0/1:78,3:0.062:81:32,2:46,1:56,22,1,2	0/1:44,2:0.051:46:24,2:20,0:36,8,1,1
+chr1	1265876	.	A	G	.	PASS	CONTQ=34;DP=65;ECNT=2;GERMQ=93;MBQ=29,25;MFRL=230,214;MMQ=60,60;MPOS=19;NALOD=1.35;NLOD=6.32;POPAF=6.00;ROQ=34;SEQQ=20;STRANDQ=29;TLOD=6.46;CSQ=G|intron_variant|MODIFIER|UBE2J2|118424|Transcript|NM_194457.2|protein_coding||1/5||||||||||-1||SNV|EntrezGene||YES|||NP_919439.1||||||||||||||||||||||||||||||||||	GT:AD:AF:DP:F1R2:F2R1:PGT:PID:PS:SB	0|0:23,0:0.043:23:8,0:15,0:0|1:1265876_A_G:1265876:18,5,0,0	0|1:18,2:0.150:20:10,1:7,0:0|1:1265876_A_G:1265876:16,2,1,1	0|1:21,1:0.091:22:10,1:10,0:0|1:1265876_A_G:1265876:16,5,1,0
+chr2	3606096	.	C	T	.	PASS	CONTQ=93;DP=1189;ECNT=1;GERMQ=93;MBQ=20,20;MFRL=196,146;MMQ=60,60;MPOS=15;NALOD=1.78;NLOD=74.81;POPAF=6.00;ROQ=37;SEQQ=4;STRANDQ=15;TLOD=3.93;CSQ=T|intron_variant&non_coding_transcript_variant|MODIFIER|COLEC11|78989|Transcript|NR_045659.2|misc_RNA||2/7||||||||rs1036696137&COSV52594489||1||SNV|EntrezGene||YES|||||||||||||||||||||||||||||||0&1|0&1|||||	GT:AD:AF:DP:F1R2:F2R1:SB	0/0:385,2:6.663e-03:387:175,1:206,1:215,170,2,0	0/1:400,1:6.617e-03:401:203,0:195,1:239,161,0,1	0/1:376,6:0.019:382:181,3:189,3:204,172,3,3
+chr3	5207570	.	A	G	.	PASS	CONTQ=34;DP=56;ECNT=1;GERMQ=93;MBQ=28,31;MFRL=226,83;MMQ=60,60;MPOS=12;NALOD=0.845;NLOD=5.11;POPAF=6.00;ROQ=42;SEQQ=3;STRANDQ=19;TLOD=4.28;CSQ=G|intron_variant|MODIFIER|EDEM1|9695|Transcript|NM_014674.3|protein_coding||7/11||||||||||1||SNV|EntrezGene||YES|||NP_055489.1||||||||||||||||||||||||||||||||||	GT:AD:AF:DP:F1R2:F2R1:SB	0/0:20,0:0.052:20:11,0:9,0:4,16,0,0	0/1:18,2:0.143:20:12,2:6,0:2,16,1,1	0/1:14,0:0.065:14:12,0:2,0:1,13,0,0
+chrX	842012	.	G	A	.	PASS	CONTQ=93;DP=40;ECNT=2;GERMQ=72;MBQ=20,20;MFRL=160,214;MMQ=60,60;MPOS=38;NALOD=1.00;NLOD=2.71;POPAF=6.00;ROQ=52;SEQQ=20;STRANDQ=26;TLOD=6.57;CSQ=A|intergenic_variant|MODIFIER|||||||||||||||||||SNV||||||||||||||||||||||||||||||||||||||||	GT:AD:AF:DP:F1R2:F2R1:PGT:PID:PS:SB	0|0:16,0:0.091:16:9,0:7,0:0|1:842006_G_A:842006:9,7,0,0	0|1:10,0:0.111:10:3,0:7,0:0|1:842006_G_A:842006:3,7,0,0	0|1:12,2:0.182:14:6,2:6,0:0|1:842006_G_A:842006:7,5,1,1
+chrX	1438824	.	A	G	.	PASS	CONTQ=34;DP=68;ECNT=1;GERMQ=93;MBQ=28,20;MFRL=253,174;MMQ=60,60;MPOS=33;NALOD=1.45;NLOD=7.82;POPAF=6.00;ROQ=46;SEQQ=16;STRANDQ=16;TLOD=5.88;CSQ=G|intron_variant|MODIFIER|ASMTL|8623|Transcript|NM_004192.4|protein_coding||3/12||||||||||-1||SNV|EntrezGene||YES|||NP_004183.2||||||||||||||||||||||||||||||||||	GT:AD:AF:DP:F1R2:F2R1:SB	0/0:27,0:0.034:27:7,0:20,0:26,1,0,0	0/1:19,2:0.095:21:12,2:7,0:18,1,1,1	0/1:17,0:0.053:17:8,0:9,0:17,0,0,0
