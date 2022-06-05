@@ -1,15 +1,25 @@
 
-#' Title
-#'
-#' @param file Mutect VCF file
-#'
-#' @return tibble
-#' @export
-#'
-#' @import vcfR
+read_vcf <- function(vcf_file, sample_ids) {
+  snv_algorithm <- recognize_vcf_algorithm(vcf_file)
+  if (snv_algorithm == "Mutect") {
+    snvs <- read_mutect(vcf_file, sample_ids)
+  }
+  snvs
+}
+
+recognize_vcf_algorithm <- function(vcf_file) {
+  vcf <- read.vcfR(vcf_file, verbose = FALSE)
+  meta <- vcf@meta
+  if (any(str_detect(meta, "##MutectVersion"))) {
+    return("Mutect")
+  } else {
+    stop("Unknown VCF type!")
+  }
+}
+
 read_mutect <- function(vcf_file, sample_ids) {
   tidy_vcf <- vcf_file %>%
-    read.vcfR() %>%
+    read.vcfR(verbose = FALSE) %>%
     vcfR2tidy(format_fields = "AD")
   inner_join(
     filter(tidy_vcf$fix, FILTER == "PASS"),
@@ -26,5 +36,6 @@ read_mutect <- function(vcf_file, sample_ids) {
         map_int(length)
     ) %>%
     filter(n_variants == 2, sample_id %in% sample_ids) %>%
-    separate(gt_AD, into = c("ref_counts", "var_counts"))
+    separate(gt_AD, into = c("ref_counts", "var_counts")) %>%
+    select(-n_variants)
 }

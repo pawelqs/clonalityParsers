@@ -1,29 +1,42 @@
 
 
-prepare_pycloneVI_input <- function(snv_files, cnv_files, sample_ids, genome_build) {
-  cnv_algorithm <- rocognize_cnv_algorithm(cnv_files)
-  # snv_algorithm <- rocognize_snv_algorithm()
-  cnvs <- read_cnvs(cnv_files, sample_ids, cnv_algorithm, genome_build)
-  # snvs <- read_snvs(snv_files, snv_algorithm)
+#' Pyclone_VI input parser
+#'
+#' @param vcf_file Path to VCF file
+#' @param cnv_files Path to CNV files
+#' @param sample_ids Sample IDs
+#' @param sex "male"/"female"
+#' @param genome_build eg. "hg38"
+#'
+#' @return parsed tibble
+#' @export
+prepare_pycloneVI_input <- function(vcf_file, cnv_files, sample_ids, sex, genome_build) {
+  cnvs <- read_cnvs(cnv_files, sample_ids, sex, genome_build)
+  snvs <- read_vcf(vcf_file, sample_ids)
 
-  # join snv with cnv
-  # muts %>%
-  #   as_granges() %>%
-  #   join_overlap_left(cnvs) %>%
-  #   as.data.frame() %>%
-  #   select(mutation_id, ref_counts, var_counts, normal_cn, minor_cn, major_cn) %>%
-  #   drop_na() %>%
-  #   filter(major_cn > 0)
+  res <- merge_muts_with_cnvs(snvs, cnvs) %>%
+    select(
+      mutation_id,
+      sample_id,
+      ref_counts,
+      alt_counts = var_counts,
+      major_cn,
+      minor_cn,
+      normal_cn,
+      tumour_content = 1
+    ) %>%
+    drop_na() %>%
+    filter(major_cn > 0)
 
-  # tibble(
-  #   mutation_id = NULL,
-  #   sample_id = NULL,
-  #   ref_counts = NULL,
-  #   alt_counts = NULL,
-  #   major_cn = NULL,
-  #   minor_cn = NULL,
-  #   normal_cn = NULL,
-  #   tumour_content = NULL
-  # )
+  res
 }
 
+
+merge_muts_with_cnvs <- function(muts, cnvs) {
+  muts %>%
+    as_granges() %>%
+    join_overlap_left(cnvs) %>%
+    as.data.frame() %>%
+    filter(sample_id.x == sample_id.y) %>%
+    mutate(sample_id = sample_id.x)
+}
