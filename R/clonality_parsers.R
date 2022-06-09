@@ -29,17 +29,21 @@
 #'   sample_ids = S1_sample_ids, sex = S1_sex, genome_build = S1_genome_build)
 prepare_pycloneVI_input <- function(vcf_file, cnv_files,
                                     sample_ids, sex, genome_build,
+                                    purity = NULL, purity_files = NULL,
                                     snv_algorithm = NULL, cnv_algorithm = NULL,
                                     filename = NULL) {
 
   cnvs <- read_cnvs(cnv_files, sample_ids, sex, genome_build, cnv_algorithm)
   snvs <- read_vcf(vcf_file, sample_ids, snv_algorithm)
+  purities <- get_purities(purity, cnvs, snvs, sample_ids, purity_files)
 
   parsed <- merge_muts_with_cnvs(snvs, cnvs) %>%
     select(mutation_id, sample_id, ref_counts, alt_counts = var_counts,
            major_cn, minor_cn, normal_cn) %>%
     drop_na() %>%
-    filter(major_cn > 0)
+    filter(major_cn > 0) %>%
+    left_join(purities) %>%
+    rename_column_if_exist("purity", "tumour_content")
 
   if (!is.null(filename))
     write_tsv(parsed, filename)
@@ -56,3 +60,4 @@ merge_muts_with_cnvs <- function(muts, cnvs) {
     filter(sample_id.x == sample_id.y) %>%
     mutate(sample_id = sample_id.x)
 }
+

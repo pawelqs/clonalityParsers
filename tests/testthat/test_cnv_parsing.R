@@ -1,4 +1,4 @@
-cnv_meta_cols <- c("sample_id", "total_cn", "minor_cn", "major_cn", "normal_cn")
+FACETS_cols <- c("sample_id", "total_cn", "minor_cn", "major_cn", "purity", "normal_cn")
 FACETS_files <- c(
   S1_P1 = system.file("testdata", "S1_P1.csv", package = "clonalityParsers"),
   S1_L1 = system.file("testdata", "S1_L1.csv", package = "clonalityParsers")
@@ -10,7 +10,7 @@ test_that("CNV reading works", {
   ids <- names(FACETS_files)
   res <- read_cnvs(files, ids, sex = "male", genome_build = "hg38")
   expect_true("GRanges" %in% class(res))
-  expect_identical(colnames(res@elementMetadata), cnv_meta_cols)
+  expect_identical(colnames(res@elementMetadata), FACETS_cols)
   expect_error(read_cnvs(Mutect_file, ids, sex = "male", genome_build = "hg38"))
 })
 

@@ -27,7 +27,7 @@ recognize_cnv_algorithm <- function(cnv_files) {
 read_FACETS <- function(facets_files, sample_ids) {
   facets_files %>%
     set_names(sample_ids) %>%
-    map(read_csv) %>%
+    map(read_csv, col_types = "cddddddddddddddd") %>%
     bind_rows(.id = "sample_id") %>%
     transmute(
       sample_id,
@@ -36,7 +36,8 @@ read_FACETS <- function(facets_files, sample_ids) {
       end,
       total_cn = tcn.em,
       minor_cn = lcn.em,
-      major_cn = total_cn - minor_cn
+      major_cn = total_cn - minor_cn,
+      purity = Purity
     )
 }
 

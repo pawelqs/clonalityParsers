@@ -22,10 +22,11 @@ recognize_vcf_algorithm <- function(vcf_file) {
 read_mutect <- function(vcf_file, sample_ids) {
   tidy_vcf <- vcf_file %>%
     read.vcfR(verbose = FALSE) %>%
-    vcfR2tidy(format_fields = "AD")
+    vcfR2tidy(format_fields = "AD", verbose = FALSE)
   inner_join(
     filter(tidy_vcf$fix, FILTER == "PASS"),
-    filter(tidy_vcf$gt, !is.na(gt_AD))
+    filter(tidy_vcf$gt, !is.na(gt_AD)),
+    by = c("ChromKey", "POS")
   ) %>%
     transmute(
       sample_id = Indiv,
