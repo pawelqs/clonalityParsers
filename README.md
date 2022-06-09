@@ -14,12 +14,15 @@ clonality algorithms, to facilitate interchangeability of the algorithms.
 ### Supported algorithms
 
 SNV callers:
+
 - Mutect2
 
 CNV callers:
+
 - FACETS
 
 Clonality analysis algorithms:
+
 - PyClone-VI
 
 ## Installation
