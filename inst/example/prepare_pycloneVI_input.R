@@ -1,7 +1,8 @@
 # install.packages("tidyverse")
 # install.packages("remotes")
 # install.packages("optparse")
-# remotes::install_github("https://github.com/pawel125/clonalityParsers.git")
+
+remotes::install_github("https://github.com/pawel125/clonalityParsers.git")
 
 suppressPackageStartupMessages(library(optparse))
 suppressPackageStartupMessages(library(clonalityParsers))

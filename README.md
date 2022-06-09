@@ -31,7 +31,9 @@ Clonality analysis algorithms:
 remotes::install_github("https://github.com/pawel125/clonalityParsers.git")
 ```
 
-## Examples
+## Usage
+
+### R
 
 ```r
 library(clonalityParsers)
@@ -49,3 +51,7 @@ parsed <- prepare_pycloneVI_input(
   Mutect_file, FACETS_files,
   sample_ids = S1_sample_ids, sex = S1_sex, genome_build = S1_genome_build)
 ```
+
+### Shell
+
+An example script for shell usage is in `inst/example`, along with the conda environments.
