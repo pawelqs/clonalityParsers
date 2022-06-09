@@ -1,11 +1,15 @@
 
-read_vcf <- function(vcf_file, sample_ids, snv_algorithm = NULL) {
+read_vcf <- function(vcf_file, sample_ids, sex = NULL, snv_algorithm = NULL) {
   if (is.null(snv_algorithm)){
     snv_algorithm <- recognize_vcf_algorithm(vcf_file)
   }
   if (snv_algorithm == "Mutect") {
     snvs <- read_mutect(vcf_file, sample_ids)
   }
+
+  if (is.null(sex))
+    snvs <- filter(snvs, !seqnames %in% c("chrX", "chrY"))
+
   snvs
 }
 
@@ -30,7 +34,7 @@ read_mutect <- function(vcf_file, sample_ids) {
   ) %>%
     transmute(
       sample_id = Indiv,
-      seqnames = CHROM,
+      seqnames = if_else(str_detect(CHROM, "chr"), CHROM, str_c("chr", CHROM)),
       start = POS,
       end = POS,
       mutation_id = str_c(seqnames, POS, sep = "_"),

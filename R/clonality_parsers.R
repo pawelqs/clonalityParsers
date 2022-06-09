@@ -1,11 +1,14 @@
 
 #' Parses SNV and CNV calls into PyClone-VI input format
 #'
-#' @param vcf_file Path to VCF file
-#' @param cnv_files Path to CNV files
-#' @param sample_ids Sample IDs
-#' @param sex "male"/"female"
+#' @param vcf_file (required) Path to VCF file
+#' @param cnv_files (required) Path to CNV files
+#' @param sample_ids (required) Sample IDs
+#' @param sex "male"/"female", if NULL - sex chromosomes will be dropped
 #' @param genome_build eg. "hg38"
+#' @param purity FACETS to use FACETS purity estimations, single value for all samples or
+#'               single value per sample. Default: NULL (no purity column created)
+#' @param purity_files currently not used
 #' @param snv_algorithm algorithm used for SNVs detection, will be recognized if NULL, default: NULL
 #' @param cnv_algorithm algorithm used for CNVs detection, will be recognized if NULL, default: NULL
 #' @param filename File name to create on disk, default: NULL
@@ -27,14 +30,14 @@
 #' df <- prepare_pycloneVI_input(
 #'   Mutect_file, FACETS_files,
 #'   sample_ids = S1_sample_ids, sex = S1_sex, genome_build = S1_genome_build)
-prepare_pycloneVI_input <- function(vcf_file, cnv_files,
-                                    sample_ids, sex, genome_build,
+prepare_pycloneVI_input <- function(vcf_file, cnv_files, sample_ids,
+                                    sex = NULL, genome_build = NULL,
                                     purity = NULL, purity_files = NULL,
                                     snv_algorithm = NULL, cnv_algorithm = NULL,
                                     filename = NULL) {
 
-  cnvs <- read_cnvs(cnv_files, sample_ids, sex, genome_build, cnv_algorithm)
-  snvs <- read_vcf(vcf_file, sample_ids, snv_algorithm)
+  cnvs <- read_cnvs(cnv_files, sample_ids, sex, cnv_algorithm, genome_build)
+  snvs <- read_vcf(vcf_file, sample_ids, sex, snv_algorithm)
   purities <- get_purities(purity, cnvs, snvs, sample_ids, purity_files)
 
   parsed <- merge_muts_with_cnvs(snvs, cnvs) %>%
@@ -42,7 +45,7 @@ prepare_pycloneVI_input <- function(vcf_file, cnv_files,
            major_cn, minor_cn, normal_cn) %>%
     drop_na() %>%
     filter(major_cn > 0) %>%
-    left_join(purities) %>%
+    left_join(purities, by = "sample_id") %>%
     rename_column_if_exist("purity", "tumour_content")
 
   if (!is.null(filename))

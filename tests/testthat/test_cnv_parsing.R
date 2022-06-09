@@ -8,10 +8,10 @@ Mutect_file <- system.file("testdata", "S1_Mutect.vcf", package = "clonalityPars
 test_that("CNV reading works", {
   files <- FACETS_files
   ids <- names(FACETS_files)
-  res <- read_cnvs(files, ids, sex = "male", genome_build = "hg38")
-  expect_true("GRanges" %in% class(res))
+  res <- read_cnvs(files, ids, sex = "male")
+  expect_s4_class(res, "GRanges")
   expect_identical(colnames(res@elementMetadata), FACETS_cols)
-  expect_error(read_cnvs(Mutect_file, ids, sex = "male", genome_build = "hg38"))
+  expect_error(read_cnvs(Mutect_file, ids))
 })
 
 test_that("CNV recognizing works", {

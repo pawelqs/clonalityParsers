@@ -1,11 +1,14 @@
 
-read_cnvs <- function(cnv_files, sample_ids, sex, genome_build, cnv_algorithm = NULL) {
-  if (is.null(cnv_algorithm)) {
+read_cnvs <- function(cnv_files, sample_ids, sex = NULL, cnv_algorithm = NULL, genome_build = NULL) {
+  if (is.null(cnv_algorithm))
     cnv_algorithm <- recognize_cnv_algorithm(cnv_files)
-  }
-  if (cnv_algorithm == "FACETS") {
+
+  if (cnv_algorithm == "FACETS")
     cnvs <- read_FACETS(cnv_files, sample_ids)
-  }
+
+  if (is.null(sex))
+    cnvs <- filter(cnvs, !seqnames %in% c("chrX", "chrY"))
+
   cnvs %>%
     create_cnv_granges(genome_build) %>%
     add_normal_cn(sex)
@@ -42,31 +45,41 @@ read_FACETS <- function(facets_files, sample_ids) {
 }
 
 
-create_cnv_granges <- function(cnvs, genome_build) {
-  chromosomes <-unique(cnvs$seqnames)
-  seq_info <- genome_info(genome_build) %>%
-    seqinfo() %>%
-    as.data.frame() %>%
-    rownames_to_column("chr") %>%
-    filter(chr %in% chromosomes)
+create_cnv_granges <- function(cnvs, genome_build = NULL) {
+  if (is.null(genome_build)) {
+    as_granges(cnvs)
+  } else {
+    chromosomes <-unique(cnvs$seqnames)
+    seq_info <- genome_info(genome_build) %>%
+      seqinfo() %>%
+      as.data.frame() %>%
+      rownames_to_column("chr") %>%
+      filter(chr %in% chromosomes)
 
-  cnvs %>%
-    as_granges() %>%
-    set_genome_info(
-      genome = genome_build,
-      seqnames = seq_info$chr,
-      seqlengths = seq_info$seqlengths,
-      is_circular = seq_info$isCircular
-    )
+    cnvs %>%
+      as_granges() %>%
+      set_genome_info(
+        genome = genome_build,
+        seqnames = seq_info$chr,
+        seqlengths = seq_info$seqlengths,
+        is_circular = seq_info$isCircular
+      )
+  }
 }
 
 
-add_normal_cn <- function(cnvs, sex) {
+add_normal_cn <- function(cnvs, sex = NULL) {
+  if (is.null(sex))
+    sex <- "null"
   cnvs %>%
     sort() %>%
     mutate(
       chr = as.character(seqnames),
-      normal_cn = if_else(chr == "chrY" & sex == "male", 1, 2)
+      normal_cn = case_when(
+        chr %in% c("chrX", "chrY") & sex == "male" ~ 1,
+        chr %in% c("chrX", "chrY") & sex == "null" ~ NA_real_,
+        TRUE ~ 2
+      )
     ) %>%
     select(-chr)
 }

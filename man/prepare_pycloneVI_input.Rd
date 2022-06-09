@@ -8,23 +8,30 @@ prepare_pycloneVI_input(
   vcf_file,
   cnv_files,
   sample_ids,
-  sex,
-  genome_build,
+  sex = NULL,
+  genome_build = NULL,
+  purity = NULL,
+  purity_files = NULL,
   snv_algorithm = NULL,
   cnv_algorithm = NULL,
   filename = NULL
 )
 }
 \arguments{
-\item{vcf_file}{Path to VCF file}
+\item{vcf_file}{(required) Path to VCF file}
 
-\item{cnv_files}{Path to CNV files}
+\item{cnv_files}{(required) Path to CNV files}
 
-\item{sample_ids}{Sample IDs}
+\item{sample_ids}{(required) Sample IDs}
 
-\item{sex}{"male"/"female"}
+\item{sex}{"male"/"female", if NULL - sex chromosomes will be dropped}
 
 \item{genome_build}{eg. "hg38"}
+
+\item{purity}{FACETS to use FACETS purity estimations, single value for all samples or
+single value per sample. Default: NULL (no purity column created)}
+
+\item{purity_files}{currently not used}
 
 \item{snv_algorithm}{algorithm used for SNVs detection, will be recognized if NULL, default: NULL}
 
