@@ -23,13 +23,10 @@
 #'   S1_L1 = system.file("testdata", "S1_L1.csv", package = "clonalityParsers")
 #' )
 #' Mutect_file <- system.file("testdata", "S1_Mutect.vcf", package = "clonalityParsers")
-#' S1_sample_ids <- c("S1_P1", "S1_L1")
-#' S1_genome_build <- "hg38"
-#' S1_sex <- "male"
+#' sample_ids <- c("S1_P1", "S1_L1")
+#' sex <- "female"
 #'
-#' df <- prepare_pycloneVI_input(
-#'   Mutect_file, FACETS_files,
-#'   sample_ids = S1_sample_ids, sex = S1_sex, genome_build = S1_genome_build)
+#' df <- prepare_pycloneVI_input(Mutect_file, FACETS_files, sample_ids = sample_ids, sex = sex)
 prepare_pycloneVI_input <- function(vcf_file, cnv_files, sample_ids,
                                     sex = NULL, genome_build = NULL,
                                     purity = NULL, purity_files = NULL,
@@ -45,8 +42,13 @@ prepare_pycloneVI_input <- function(vcf_file, cnv_files, sample_ids,
            major_cn, minor_cn, normal_cn) %>%
     drop_na() %>%
     filter(major_cn > 0) %>%
-    left_join(purities, by = "sample_id") %>%
-    rename_column_if_exist("purity", "tumour_content")
+    left_join(purities, by = "sample_id")
+
+  parsed <-
+    if (is.null(purity))
+      select(parsed, -purity)
+    else
+      rename(parsed, tumour_content = purity)
 
   if (!is.null(filename))
     write_tsv(parsed, filename)
@@ -63,4 +65,3 @@ merge_muts_with_cnvs <- function(muts, cnvs) {
     filter(sample_id.x == sample_id.y) %>%
     mutate(sample_id = sample_id.x)
 }
-

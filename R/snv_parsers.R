@@ -7,10 +7,8 @@ read_vcf <- function(vcf_file, sample_ids, sex = NULL, snv_algorithm = NULL) {
     snvs <- read_mutect(vcf_file, sample_ids)
   }
 
-  if (is.null(sex))
-    snvs <- filter(snvs, !seqnames %in% c("chrX", "chrY"))
-
-  snvs
+  snvs %>%
+    drop_sex_chromosomes_if_sex_unknown(sex)
 }
 
 recognize_vcf_algorithm <- function(vcf_file) {

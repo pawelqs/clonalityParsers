@@ -6,10 +6,8 @@ read_cnvs <- function(cnv_files, sample_ids, sex = NULL, cnv_algorithm = NULL, g
   if (cnv_algorithm == "FACETS")
     cnvs <- read_FACETS(cnv_files, sample_ids)
 
-  if (is.null(sex))
-    cnvs <- filter(cnvs, !seqnames %in% c("chrX", "chrY"))
-
   cnvs %>%
+    drop_sex_chromosomes_if_sex_unknown(sex) %>%
     create_cnv_granges(genome_build) %>%
     add_normal_cn(sex)
 }

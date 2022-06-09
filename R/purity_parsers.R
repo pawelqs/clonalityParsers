@@ -17,6 +17,8 @@ get_purities <- function(purity = NULL, cnvs = NULL, snvs = NULL, sample_ids = N
       purity = purity
     )
   } else if (is.null(purity)) {
-    tibble(sample_id = sample_ids)
-  }
+    tibble(
+      sample_id = sample_ids,
+      purity = NA_real_
+    )  }
 }

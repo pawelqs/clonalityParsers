@@ -37,6 +37,9 @@ test_that("Test that parsing single numeric purity works", {
 
 test_that("Test that returnung empty purity tibble works", {
   pur <- get_purities(sample_ids = names(FACETS_files))
-  exp <- tibble(sample_id = names(FACETS_files))
+  exp <- tibble(
+    sample_id = names(FACETS_files),
+    purity = NA_real_
+  )
   expect_identical(pur, exp)
 })
