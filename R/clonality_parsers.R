@@ -1,5 +1,4 @@
 
-
 #' Parses SNV and CNV calls into PyClone-VI input format
 #'
 #' @param vcf_file Path to VCF file
