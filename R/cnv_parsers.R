@@ -1,6 +1,8 @@
 
-read_cnvs <- function(cnv_files, sample_ids, sex, genome_build) {
-  cnv_algorithm <- recognize_cnv_algorithm(cnv_files)
+read_cnvs <- function(cnv_files, sample_ids, sex, genome_build, cnv_algorithm = NULL) {
+  if (is.null(cnv_algorithm)) {
+    cnv_algorithm <- recognize_cnv_algorithm(cnv_files)
+  }
   if (cnv_algorithm == "FACETS") {
     cnvs <- read_FACETS(cnv_files, sample_ids)
   }

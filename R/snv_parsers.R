@@ -1,6 +1,8 @@
 
-read_vcf <- function(vcf_file, sample_ids) {
-  snv_algorithm <- recognize_vcf_algorithm(vcf_file)
+read_vcf <- function(vcf_file, sample_ids, snv_algorithm = NULL) {
+  if (is.null(snv_algorithm)){
+    snv_algorithm <- recognize_vcf_algorithm(vcf_file)
+  }
   if (snv_algorithm == "Mutect") {
     snvs <- read_mutect(vcf_file, sample_ids)
   }

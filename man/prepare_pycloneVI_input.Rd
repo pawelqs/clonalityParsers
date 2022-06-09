@@ -2,9 +2,18 @@
 % Please edit documentation in R/clonality_parsers.R
 \name{prepare_pycloneVI_input}
 \alias{prepare_pycloneVI_input}
-\title{Pyclone_VI input parser}
+\title{Parses SNV and CNV calls into PyClone-VI input format}
 \usage{
-prepare_pycloneVI_input(vcf_file, cnv_files, sample_ids, sex, genome_build)
+prepare_pycloneVI_input(
+  vcf_file,
+  cnv_files,
+  sample_ids,
+  sex,
+  genome_build,
+  snv_algorithm = NULL,
+  cnv_algorithm = NULL,
+  filename = NULL
+)
 }
 \arguments{
 \item{vcf_file}{Path to VCF file}
@@ -16,10 +25,31 @@ prepare_pycloneVI_input(vcf_file, cnv_files, sample_ids, sex, genome_build)
 \item{sex}{"male"/"female"}
 
 \item{genome_build}{eg. "hg38"}
+
+\item{snv_algorithm}{algorithm used for SNVs detection, will be recognized if NULL, default: NULL}
+
+\item{cnv_algorithm}{algorithm used for CNVs detection, will be recognized if NULL, default: NULL}
+
+\item{filename}{File name to create on disk, default: NULL}
 }
 \value{
 parsed tibble
 }
 \description{
-Pyclone_VI input parser
+Parses SNV and CNV calls into PyClone-VI input format
+}
+\examples{
+
+FACETS_files <- c(
+S1_P1 = system.file("testdata", "S1_P1.csv", package = "clonalityParsers"),
+S1_L1 = system.file("testdata", "S1_L1.csv", package = "clonalityParsers")
+)
+Mutect_file <- system.file("testdata", "S1_Mutect.vcf", package = "clonalityParsers")
+S1_sample_ids <- c("S1_P1", "S1_L1")
+S1_genome_build <- "hg38"
+S1_sex <- "male"
+
+df <- prepare_pycloneVI_input(
+  Mutect_file, FACETS_files,
+  sample_ids = S1_sample_ids, sex = S1_sex, genome_build = S1_genome_build)
 }
