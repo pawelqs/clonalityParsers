@@ -39,5 +39,9 @@ read_mutect <- function(vcf_file, sample_ids) {
     ) %>%
     filter(n_variants == 2, sample_id %in% sample_ids) %>%
     separate(gt_AD, into = c("ref_counts", "var_counts")) %>%
+    mutate(
+      ref_counts = parse_double(ref_counts),
+      var_counts = parse_double(var_counts)
+    ) %>%
     select(-n_variants)
 }

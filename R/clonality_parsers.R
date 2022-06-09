@@ -52,7 +52,7 @@ merge_muts_with_cnvs <- function(muts, cnvs) {
   muts %>%
     as_granges() %>%
     join_overlap_left(cnvs) %>%
-    as.data.frame() %>%
+    as_tibble() %>%
     filter(sample_id.x == sample_id.y) %>%
     mutate(sample_id = sample_id.x)
 }
