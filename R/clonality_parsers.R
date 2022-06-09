@@ -17,8 +17,8 @@
 #' @examples
 #'
 #' FACETS_files <- c(
-#' S1_P1 = system.file("testdata", "S1_P1.csv", package = "clonalityParsers"),
-#' S1_L1 = system.file("testdata", "S1_L1.csv", package = "clonalityParsers")
+#'   S1_P1 = system.file("testdata", "S1_P1.csv", package = "clonalityParsers"),
+#'   S1_L1 = system.file("testdata", "S1_L1.csv", package = "clonalityParsers")
 #' )
 #' Mutect_file <- system.file("testdata", "S1_Mutect.vcf", package = "clonalityParsers")
 #' S1_sample_ids <- c("S1_P1", "S1_L1")
