@@ -4,7 +4,7 @@
 #' @param vcf_file (required) Path to VCF file
 #' @param cnv_files (required) Path to CNV files
 #' @param sample_ids (required) Sample IDs
-#' @param sex "male"/"female", if NULL - sex chromosomes will be dropped
+#' @param sex "male"/"female"/"unknown", if NULL/unknown - sex chromosomes will be dropped
 #' @param genome_build eg. "hg38"
 #' @param purity FACETS to use FACETS purity estimations, single value for all samples or
 #'               single value per sample. Default: NULL (no purity column created)
@@ -32,6 +32,8 @@ prepare_pycloneVI_input <- function(vcf_file, cnv_files, sample_ids,
                                     purity = NULL, purity_files = NULL,
                                     snv_algorithm = NULL, cnv_algorithm = NULL,
                                     filename = NULL) {
+
+  sex <- if (sex == "unknown") NULL else sex
 
   cnvs <- read_cnvs(cnv_files, sample_ids, sex, cnv_algorithm, genome_build)
   snvs <- read_vcf(vcf_file, sample_ids, sex, snv_algorithm)
