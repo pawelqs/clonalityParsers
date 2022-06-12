@@ -1,18 +1,18 @@
 # install.packages("tidyverse")
 # install.packages("remotes")
 # install.packages("optparse")
-
-remotes::install_github("https://github.com/pawel125/clonalityParsers.git")
+# remotes::install_github("https://github.com/pawel125/clonalityParsers.git")
 
 suppressPackageStartupMessages(library(optparse))
 suppressPackageStartupMessages(library(clonalityParsers))
+suppressPackageStartupMessages(library(stringr))
 
 option_list <- list(
   make_option(c("-s", "--vcf_file"), dest = "vcf_file",
               help="Path to VCF file"),
   make_option(c("-c", "--cnv_files"), dest="cnv_files",
-              help="Path to CNV files"),
-  make_option(c("-c", "--sample_ids"), dest = "sample_ids",
+              help="Path to CNV files (multiple values migh be comma-separated"),
+  make_option(c("-i", "--sample_ids"), dest = "sample_ids",
               help="Sample IDs"),
   make_option("--sex", dest = "sex",
               help = "male/female"),
@@ -27,12 +27,17 @@ option_list <- list(
 )
 
 opt <- parse_args(OptionParser(option_list=option_list))
+opt$cnv_files <- str_split(opt$cnv_files, pattern = ",")[[1]]
+opt$sample_ids <- str_split(opt$sample_ids, pattern = ",")[[1]]
+print(opt)
 
 prepare_pycloneVI_input(
-  vcf_file, cnv_files,
-  sample_ids, sex, genome_build,
-  snv_algorithm, cnv_algorithm,
-  filename
+  vcf_file = opt$vcf_file,
+  cnv_files = opt$cnv_files,
+  sample_ids = opt$sample_ids,
+  sex = opt$sex,
+  genome_build = opt$genome_build,
+  snv_algorithm = opt$snv_algorithm,
+  cnv_algorithm = opt$cnv_algorithm,
+  filename = opt$filename
 )
-
-
