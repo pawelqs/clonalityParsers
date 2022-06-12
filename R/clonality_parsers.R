@@ -33,7 +33,7 @@ prepare_pycloneVI_input <- function(vcf_file, cnv_files, sample_ids,
                                     snv_algorithm = NULL, cnv_algorithm = NULL,
                                     filename = NULL) {
 
-  sex <- if (sex == "unknown") NULL else sex
+  sex <- if (!is.null(sex) && sex == "unknown") NULL else sex
 
   cnvs <- read_cnvs(cnv_files, sample_ids, sex, cnv_algorithm, genome_build)
   snvs <- read_vcf(vcf_file, sample_ids, sex, snv_algorithm)

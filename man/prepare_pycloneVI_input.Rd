@@ -24,7 +24,7 @@ prepare_pycloneVI_input(
 
 \item{sample_ids}{(required) Sample IDs}
 
-\item{sex}{"male"/"female", if NULL - sex chromosomes will be dropped}
+\item{sex}{"male"/"female"/"unknown", if NULL/unknown - sex chromosomes will be dropped}
 
 \item{genome_build}{eg. "hg38"}
 
