@@ -14,6 +14,8 @@ prepare_pycloneVI_input(
   purity_files = NULL,
   snv_algorithm = NULL,
   cnv_algorithm = NULL,
+  filter_min_DP = 0,
+  filter_min_alt_reads = 0,
   filename = NULL
 )
 }
@@ -36,6 +38,10 @@ single value per sample. Default: NULL (no purity column created)}
 \item{snv_algorithm}{algorithm used for SNVs detection, will be recognized if NULL, default: NULL}
 
 \item{cnv_algorithm}{algorithm used for CNVs detection, will be recognized if NULL, default: NULL}
+
+\item{filter_min_DP}{minimal sequencing depth of mutation required in at least one sample}
+
+\item{filter_min_alt_reads}{minimal alt_reads of mutation required in at least one sample}
 
 \item{filename}{File name to create on disk, default: NULL}
 }

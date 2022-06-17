@@ -11,6 +11,8 @@
 #' @param purity_files currently not used
 #' @param snv_algorithm algorithm used for SNVs detection, will be recognized if NULL, default: NULL
 #' @param cnv_algorithm algorithm used for CNVs detection, will be recognized if NULL, default: NULL
+#' @param filter_min_DP minimal sequencing depth of mutation required in at least one sample
+#' @param filter_min_alt_reads minimal alt_reads of mutation required in at least one sample
 #' @param filename File name to create on disk, default: NULL
 #'
 #' @return parsed tibble
@@ -31,16 +33,18 @@ prepare_pycloneVI_input <- function(vcf_file, cnv_files, sample_ids,
                                     sex = NULL, genome_build = NULL,
                                     purity = NULL, purity_files = NULL,
                                     snv_algorithm = NULL, cnv_algorithm = NULL,
+                                    filter_min_DP = 0, filter_min_alt_reads = 0,
                                     filename = NULL) {
 
   sex <- if (!is.null(sex) && sex == "unknown") NULL else sex
+  filters <- lst(filter_min_DP, filter_min_alt_reads)
 
   cnvs <- read_cnvs(cnv_files, sample_ids, sex, cnv_algorithm, genome_build)
-  snvs <- read_vcf(vcf_file, sample_ids, sex, snv_algorithm)
+  snvs <- read_vcf(vcf_file, sample_ids, sex, snv_algorithm, filters)
   purities <- get_purities(purity, cnvs, snvs, sample_ids, purity_files)
 
   parsed <- merge_muts_with_cnvs(snvs, cnvs) %>%
-    select(mutation_id, sample_id, ref_counts, alt_counts = var_counts,
+    select(mutation_id, sample_id, ref_counts = ref_reads, alt_counts = alt_reads,
            major_cn, minor_cn, normal_cn) %>%
     drop_na() %>%
     filter(major_cn > 0) %>%

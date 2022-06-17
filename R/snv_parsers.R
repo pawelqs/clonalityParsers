@@ -1,5 +1,5 @@
 
-read_vcf <- function(vcf_file, sample_ids, sex = NULL, snv_algorithm = NULL) {
+read_vcf <- function(vcf_file, sample_ids, sex = NULL, snv_algorithm = NULL, filters = NULL) {
   if (is.null(snv_algorithm)){
     snv_algorithm <- recognize_vcf_algorithm(vcf_file)
   }
@@ -8,7 +8,8 @@ read_vcf <- function(vcf_file, sample_ids, sex = NULL, snv_algorithm = NULL) {
   }
 
   snvs %>%
-    drop_sex_chromosomes_if_sex_unknown(sex)
+    drop_sex_chromosomes_if_sex_unknown(sex) %>%
+    filter_SNVs(filters)
 }
 
 recognize_vcf_algorithm <- function(vcf_file) {
@@ -41,10 +42,34 @@ read_mutect <- function(vcf_file, sample_ids) {
         map_int(length)
     ) %>%
     filter(n_variants == 2, sample_id %in% sample_ids) %>%
-    separate(gt_AD, into = c("ref_counts", "var_counts")) %>%
+    separate(gt_AD, into = c("ref_reads", "alt_reads")) %>%
     mutate(
-      ref_counts = parse_double(ref_counts),
-      var_counts = parse_double(var_counts)
+      ref_reads = parse_double(ref_reads),
+      alt_reads = parse_double(alt_reads)
     ) %>%
     select(-n_variants)
+}
+
+
+filter_SNVs <- function(snvs, filters = NULL) {
+  if (is.null(filters))
+    filters <- list()
+
+  if (!is.null(filters$filter_min_DP)) {
+    muts_passed_in_any_sample <- snvs %>%
+      filter(ref_reads + alt_reads >= filters$filter_min_DP) %>%
+      pull(mutation_id) %>%
+      unique()
+    snvs <- filter(snvs, mutation_id %in% muts_passed_in_any_sample)
+  }
+
+  if (!is.null(filters$filter_min_alt_reads)) {
+    muts_passed_in_any_sample <- snvs %>%
+      filter(alt_reads >= filters$filter_min_alt_reads) %>%
+      pull(mutation_id) %>%
+      unique()
+    snvs <- filter(snvs, mutation_id %in% muts_passed_in_any_sample)
+  }
+
+  snvs
 }
