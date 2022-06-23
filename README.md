@@ -26,6 +26,8 @@ Clonality analysis algorithms:
 - PyClone-VI
 - CliP
 
+If you would like to get clonalityParsers support your algorithm, let me know in the Issues.
+
 ## Installation
 
 ```r
