@@ -24,6 +24,7 @@ CNV callers:
 Clonality analysis algorithms:
 
 - PyClone-VI
+- CliP
 
 ## Installation
 
