@@ -103,3 +103,9 @@ test_that("CliP input data preparation works", {
     read_tsv(system.file("testdata", "S1_L1.clip-purity.txt", package = "clonalityParsers"))
   )
 })
+
+
+test_that("chr to int works", {
+  chrs <- c("chr1", "chr1", "chr2", "chrX", "chrY")
+  expect_identical(chromosomes_to_int(chrs), c(1, 1, 2, 98, 99))
+})

@@ -98,7 +98,8 @@ prepare_CliP_input <- function(td, outdir, suffixes = c(".clip-snv.tsv", ".clip-
 prepare_CliP_input.tumordata <- function(td, outdir, suffixes = c(".clip-snv.tsv", ".clip-cna.tsv", ".clip-purity.txt")) {
 
   snvs <- td$snvs %>%
-    select(sample_id, chromosome_index = seqnames, position = start,
+    mutate(chromosome_index = chromosomes_to_int(seqnames)) %>%
+    select(sample_id, chromosome_index , position = start,
            alt_count = alt_reads, ref_count = ref_reads) %>%
     group_by(sample_id) %>%
     nest() %>%
@@ -106,7 +107,8 @@ prepare_CliP_input.tumordata <- function(td, outdir, suffixes = c(".clip-snv.tsv
 
   cnas <- td$cnvs %>%
     as_tibble() %>%
-    select(sample_id, chromosome_index = seqnames, start_position = start, end_position = end,
+    mutate(chromosome_index = chromosomes_to_int(seqnames)) %>%
+    select(sample_id, chromosome_index, start_position = start, end_position = end,
            major_cn, minor_cn, total_cn) %>%
     group_by(sample_id) %>%
     nest() %>%
@@ -128,6 +130,15 @@ prepare_CliP_input.tumordata <- function(td, outdir, suffixes = c(".clip-snv.tsv
   }
 
   lst(snvs, cnas, purities)
+}
+
+
+chromosomes_to_int <- function(chr) {
+  chr %>%
+    str_replace("chr", "") %>%
+    str_replace("X", "98") %>%
+    str_replace("Y", "99") %>%
+    parse_number()
 }
 
 
