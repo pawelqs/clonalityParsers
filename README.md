@@ -47,9 +47,14 @@ S1_sample_ids <- c("S1_P1", "S1_L1")
 S1_genome_build <- "hg38"
 S1_sex <- "male"
 
-parsed <- prepare_pycloneVI_input(
+td <- read_files(
   Mutect_file, FACETS_files,
-  sample_ids = S1_sample_ids, sex = S1_sex, genome_build = S1_genome_build)
+  sample_ids = S1_sample_ids, sex = S1_sex, genome_build = S1_genome_build
+)
+
+td %>%
+  filter_SNVs(filter_min_DP = 10) %>%
+  prepare_pycloneVI_input(filename = "S1.pyclone-input.tsv")
 ```
 
 ### Shell

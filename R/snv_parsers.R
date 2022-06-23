@@ -8,9 +8,9 @@ read_vcf <- function(vcf_file, sample_ids, sex = NULL, snv_algorithm = NULL, fil
   }
 
   snvs %>%
-    drop_sex_chromosomes_if_sex_unknown(sex) %>%
-    filter_SNVs(filters)
+    drop_sex_chromosomes_if_sex_unknown(sex)
 }
+
 
 recognize_vcf_algorithm <- function(vcf_file) {
   vcf <- read.vcfR(vcf_file, verbose = FALSE)
@@ -21,6 +21,7 @@ recognize_vcf_algorithm <- function(vcf_file) {
     stop("Unknown VCF type!")
   }
 }
+
 
 read_mutect <- function(vcf_file, sample_ids) {
   tidy_vcf <- vcf_file %>%
@@ -51,25 +52,9 @@ read_mutect <- function(vcf_file, sample_ids) {
 }
 
 
-filter_SNVs <- function(snvs, filters = NULL) {
-  if (is.null(filters))
-    filters <- list()
-
-  if (!is.null(filters$filter_min_DP)) {
-    muts_passed_in_any_sample <- snvs %>%
-      filter(ref_reads + alt_reads >= filters$filter_min_DP) %>%
-      pull(mutation_id) %>%
-      unique()
-    snvs <- filter(snvs, mutation_id %in% muts_passed_in_any_sample)
-  }
-
-  if (!is.null(filters$filter_min_alt_reads)) {
-    muts_passed_in_any_sample <- snvs %>%
-      filter(alt_reads >= filters$filter_min_alt_reads) %>%
-      pull(mutation_id) %>%
-      unique()
-    snvs <- filter(snvs, mutation_id %in% muts_passed_in_any_sample)
-  }
-
-  snvs
+drop_sex_chromosomes_if_sex_unknown <- function(df, sex) {
+  if (is.null(sex))
+    filter(df, !seqnames %in% c("chrX", "chrY"))
+  else
+    df
 }

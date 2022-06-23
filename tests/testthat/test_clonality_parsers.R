@@ -13,9 +13,31 @@ S1_sample_ids <- c("S1_P1", "S1_L1")
 S1_genome_build <- "hg38"
 S1_sex <- "female"
 
+data(td)
+
+
+test_that("tumordata creation works", {
+  expect_s3_class(td, "tumordata")
+  expect_identical(names(td), c("snvs", "cnvs", "purities"))
+})
+
+
+test_that("tumordata filtering works", {
+  td1 <- filter_SNVs(td)
+  expect_identical(td, td1)
+
+  td2 <- filter_SNVs(td, filter_min_DP = 100)
+  exp_mutations <- c("chr1_100", "chr1_100", "chr2_100", "chr2_100")
+  expect_identical(td2$snvs$mutation_id, exp_mutations)
+
+  td3 <- filter_SNVs(td, filter_min_alt_reads = 5)
+  exp_mutations <- c("chr2_100", "chr2_100")
+  expect_identical(td3$snvs$mutation_id, exp_mutations)
+})
+
 
 test_that("Pyclone-VI parser without purity works", {
-  df <- prepare_pycloneVI_input(Mutect_file, FACETS_files, sample_ids = S1_sample_ids, sex = S1_sex)
+  df <- prepare_pycloneVI_input(td)
   exp <- read_tsv(S1_pyclonevi_exp_file, col_types = "ccddddd")
 
   expect_true(is.data.frame(df))
@@ -25,9 +47,10 @@ test_that("Pyclone-VI parser without purity works", {
 
 
 test_that("Pyclone-VI parser with FACETS purity works", {
-  df <- prepare_pycloneVI_input(
+  td <- read_files(
     Mutect_file, FACETS_files, sample_ids = S1_sample_ids,
     purity = "FACETS", sex = S1_sex)
+  df <- prepare_pycloneVI_input(td)
   exp <- read_tsv(S1_pyclonevi_exp_file, col_types = "ccddddd") %>%
     mutate(tumour_content = c(0.5, rep(c(0.5, 0.5056), times = 6)))
   exp_columns <- c(PyClone_VI_required_columns, PyClone_VI_purity_col)
@@ -39,9 +62,10 @@ test_that("Pyclone-VI parser with FACETS purity works", {
 
 
 test_that("Pyclone-VI parser with single purity value works", {
-  df <- prepare_pycloneVI_input(
+  td <- read_files(
     Mutect_file, FACETS_files, sample_ids = S1_sample_ids,
     purity = 1, sex = S1_sex)
+  df <- prepare_pycloneVI_input(td)
   exp <- read_tsv(S1_pyclonevi_exp_file, col_types = "ccddddd") %>%
     mutate(., tumour_content = rep(1, times = nrow(.)))
   exp_columns <- c(PyClone_VI_required_columns, PyClone_VI_purity_col)
@@ -53,11 +77,11 @@ test_that("Pyclone-VI parser with single purity value works", {
 
 
 test_that("Test that parser drops sex chromosomes only if sex not provided", {
-  df <- prepare_pycloneVI_input(Mutect_file, FACETS_files, sample_ids = S1_sample_ids)
-  sex_chrs_present <- any(str_detect(df$mutation_id, "chrX"))
+  td <- read_files(Mutect_file, FACETS_files, sample_ids = S1_sample_ids)
+  sex_chrs_present <- any(str_detect(td$snvs$mutation_id, "chrX"))
   expect_false(sex_chrs_present)
 
-  df <- prepare_pycloneVI_input(Mutect_file, FACETS_files, sample_ids = S1_sample_ids, sex = "female")
-  sex_chrs_present <- any(str_detect(df$mutation_id, "chrX"))
+  td <- read_files(Mutect_file, FACETS_files, sample_ids = S1_sample_ids, sex = "female")
+  sex_chrs_present <- any(str_detect(td$snvs$mutation_id, "chrX"))
   expect_true(sex_chrs_present)
 })

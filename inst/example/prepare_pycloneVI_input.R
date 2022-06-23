@@ -31,13 +31,13 @@ opt$cnv_files <- str_split(opt$cnv_files, pattern = ",")[[1]]
 opt$sample_ids <- str_split(opt$sample_ids, pattern = ",")[[1]]
 print(opt)
 
-prepare_pycloneVI_input(
+td <- read_files(
   vcf_file = opt$vcf_file,
   cnv_files = opt$cnv_files,
   sample_ids = opt$sample_ids,
   sex = opt$sex,
   genome_build = opt$genome_build,
   snv_algorithm = opt$snv_algorithm,
-  cnv_algorithm = opt$cnv_algorithm,
-  filename = opt$filename
+  cnv_algorithm = opt$cnv_algorithm
 )
+prepare_pycloneVI_input(td, filename = opt$filename)
