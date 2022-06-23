@@ -77,14 +77,6 @@ prepare_pycloneVI_input.tumordata <- function(td, filename = NULL) {
 }
 
 
-#' @rdname prepare_pycloneVI_input
-#' @export
-prepare_CliP_input <- function(td, filename) {
-  UseMethod("prepare_CliP_input")
-}
-
-
-
 merge_muts_with_cnvs <- function(muts, cnvs) {
   muts %>%
     as_granges() %>%
@@ -93,3 +85,54 @@ merge_muts_with_cnvs <- function(muts, cnvs) {
     filter(sample_id.x == sample_id.y) %>%
     mutate(sample_id = sample_id.x)
 }
+
+
+#' @rdname prepare_pycloneVI_input
+#' @export
+prepare_CliP_input <- function(td, outdir, suffixes = c(".clip-snv.tsv", ".clip-cna.tsv", ".clip-purity.txt")) {
+  UseMethod("prepare_CliP_input")
+}
+
+
+#' @export
+prepare_CliP_input.tumordata <- function(td, outdir, suffixes = c(".clip-snv.tsv", ".clip-cna.tsv", ".clip-purity.txt")) {
+
+  snvs <- td$snvs %>%
+    select(sample_id, chromosome_index = seqnames, position = start,
+           alt_count = alt_reads, ref_count = ref_reads) %>%
+    group_by(sample_id) %>%
+    nest() %>%
+    deframe()
+
+  cnas <- td$cnvs %>%
+    as_tibble() %>%
+    select(sample_id, chromosome_index = seqnames, start_position = start, end_position = end,
+           major_cn, minor_cn, total_cn) %>%
+    group_by(sample_id) %>%
+    nest() %>%
+    deframe()
+
+  purities <- td$purities %>%
+    replace_na(list(purity = 1)) %>%
+    deframe()
+
+  if (!is.null(outdir)) {
+    iwalk(snvs, ~write_tsv(.x, file = create_path(outdir, .y, suffixes[[1]])))
+    iwalk(cnas, ~write_tsv(.x, file = create_path(outdir, .y, suffixes[[2]])))
+    iwalk(purities, function(purity, sample_id) {
+      f <- file(create_path(outdir, sample_id, suffixes[[3]]))
+      print(purity)
+      writeLines(as.character(purity), f)
+      close(f)
+    })
+  }
+
+  lst(snvs, cnas, purities)
+}
+
+
+create_path <- function(outdir, sample_id, suffix) {
+  str_c(outdir, "/", sample_id, suffix) %>%
+    str_replace("//", "/")
+}
+

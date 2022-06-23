@@ -1,7 +1,7 @@
 Package: clonalityParsers
 Type: Package
 Title: R package for parsing SNV and CNV calls for clonality analysis
-Version: 1.3.0
+Version: 1.4.0
 Author: Pawel Kus
 Maintainer: Pawel Kus <pawel.s.kus@protonmail.com>
 Description: Clonality analysis requires providing SNV and CNV calls to the clonality analysis

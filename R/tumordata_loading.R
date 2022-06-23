@@ -37,7 +37,7 @@ tumordata <- function(snvs, cnvs, purities) {
 #' sample_ids <- c("S1_P1", "S1_L1")
 #' sex <- "female"
 #'
-#' df <- read_files(Mutect_file, FACETS_files, sample_ids = sample_ids, sex = sex)
+#' td <- read_files(Mutect_file, FACETS_files, sample_ids = sample_ids, sex = sex)
 read_files <- function(vcf_file, cnv_files, sample_ids,
                        sex = NULL, genome_build = NULL,
                        purity = NULL, purity_files = NULL,

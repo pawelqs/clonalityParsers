@@ -85,3 +85,21 @@ test_that("Test that parser drops sex chromosomes only if sex not provided", {
   sex_chrs_present <- any(str_detect(td$snvs$mutation_id, "chrX"))
   expect_true(sex_chrs_present)
 })
+
+
+test_that("CliP input data preparation works", {
+  temp_dir <- tempdir()
+  prepare_CliP_input(td, temp_dir)
+  expect_identical(
+    read_tsv(create_path(temp_dir, "S1_L1", ".clip-snv.tsv")),
+    read_tsv(system.file("testdata", "S1_L1.clip-snv.tsv", package = "clonalityParsers"))
+  )
+  expect_identical(
+    read_tsv(create_path(temp_dir, "S1_L1", ".clip-cna.tsv")),
+    read_tsv(system.file("testdata", "S1_L1.clip-cna.tsv", package = "clonalityParsers"))
+  )
+  expect_identical(
+    read_tsv(create_path(temp_dir, "S1_L1", ".clip-purity.txt")),
+    read_tsv(system.file("testdata", "S1_L1.clip-purity.txt", package = "clonalityParsers"))
+  )
+})
