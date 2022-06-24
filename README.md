@@ -15,16 +15,16 @@ clonality algorithms, to facilitate interchangeability of the algorithms.
 
 SNV callers:
 
-- Mutect2
+- [Mutect2](https://gatk.broadinstitute.org/hc/en-us/articles/360037593851-Mutect2)
 
 CNV callers:
 
-- FACETS
+- [FACETS](https://github.com/mskcc/facets)
 
 Clonality analysis algorithms:
 
-- PyClone-VI
-- CliP
+- [PyClone-VI](https://github.com/Roth-Lab/pyclone-vi)
+- [CliP](https://github.com/wwylab/CliP)
 
 If you would like to get clonalityParsers support your algorithm, let me know in the Issues.
 
