@@ -37,7 +37,7 @@ If you would like to get clonalityParsers support your algorithm, let me know in
 ## Installation
 
 ```r
-remotes::install_github("https://github.com/pawel125/clonalityParsers.git")
+remotes::install_github("https://github.com/pawelqs/clonalityParsers.git")
 ```
 
 ## Usage

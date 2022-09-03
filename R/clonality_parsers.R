@@ -10,12 +10,13 @@
 #'
 #' @examples
 #' data(td)
-#' filter(td, filter_min_DP = 10, filter_min_alt_reads = 0)
+#' filter_SNVs(td, filter_min_DP = 10, filter_min_alt_reads = 0)
 filter_SNVs <- function(td, filter_min_DP = 0, filter_min_alt_reads = 0) {
   UseMethod("filter_SNVs")
 }
 
 
+#' @inherit filter_SNVs
 #' @export
 filter_SNVs.tumordata <- function(td, filter_min_DP = 0, filter_min_alt_reads = 0) {
 
