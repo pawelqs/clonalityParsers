@@ -68,4 +68,4 @@ td %>%
 
 ### Shell
 
-An example script for shell usage is in `inst/example`, along with the conda environments.
+An example script for shell usage is in `inst/example`, along with the conda environments. 

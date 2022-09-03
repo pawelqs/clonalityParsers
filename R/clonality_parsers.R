@@ -56,6 +56,7 @@ prepare_pycloneVI_input <- function(td, filename) {
 }
 
 
+#' @inherit prepare_pycloneVI_input
 #' @export
 prepare_pycloneVI_input.tumordata <- function(td, filename = NULL) {
   parsed <- merge_muts_with_cnvs(td$snvs, td$cnvs) %>%
