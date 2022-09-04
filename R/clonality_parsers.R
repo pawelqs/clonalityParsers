@@ -41,13 +41,10 @@ filter_SNVs.tumordata <- function(td, filter_min_DP = 0, filter_min_alt_reads = 
 
 
 #' Parses tumordata object into PyClone-VI input format
-#'
 #' @param td (required) tumordata object
 #' @param filename File name to create on disk, default: NULL
-#'
 #' @return parsed tibble
 #' @export
-#'
 #' @examples
 #' data(td)
 #' pyclonevi_input <- prepare_pycloneVI_input(td)
@@ -89,13 +86,17 @@ merge_muts_with_cnvs <- function(muts, cnvs) {
 }
 
 
-#' @rdname prepare_pycloneVI_input
+#' Parses tumordata object into CliP input format
+#' @param td (required) tumordata object
+#' @param outdir directory to save CliP input files
+#' @param suffixes suffixes for CliP input files
 #' @export
 prepare_CliP_input <- function(td, outdir, suffixes = c(".clip-snv.tsv", ".clip-cna.tsv", ".clip-purity.txt")) {
   UseMethod("prepare_CliP_input")
 }
 
 
+#' @inherit prepare_CliP_input
 #' @export
 prepare_CliP_input.tumordata <- function(td, outdir, suffixes = c(".clip-snv.tsv", ".clip-cna.tsv", ".clip-purity.txt")) {
 
