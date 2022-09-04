@@ -2,16 +2,9 @@
 % Please edit documentation in R/clonality_parsers.R
 \name{prepare_pycloneVI_input}
 \alias{prepare_pycloneVI_input}
-\alias{prepare_CliP_input}
 \title{Parses tumordata object into PyClone-VI input format}
 \usage{
 prepare_pycloneVI_input(td, filename)
-
-prepare_CliP_input(
-  td,
-  outdir,
-  suffixes = c(".clip-snv.tsv", ".clip-cna.tsv", ".clip-purity.txt")
-)
 }
 \arguments{
 \item{td}{(required) tumordata object}
